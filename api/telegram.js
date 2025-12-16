@@ -1,10 +1,25 @@
 import bot from '../src/services/bot.service.js';
+import config from '../src/config/index.js';
+import { connectDatabase } from '../src/models/index.js';
+import mongoose from 'mongoose';
 
 export default async function handler(req, res) {
   // Silence unhandled promise rejection logging if not relevant for response
   process.on('unhandledRejection', (reason) => {
     console.error('Unhandled Rejection:', reason);
   });
+
+  // Ensure database is connected for every request
+  if (mongoose.connection.readyState !== 1) {
+    try {
+      console.log('Connecting to database...');
+      await connectDatabase(config.mongodb.uri);
+      console.log('Database connected');
+    } catch (error) {
+      console.error('Database connection failed:', error);
+      return res.status(500).json({ error: 'Database connection failed' });
+    }
+  }
 
   if (req.method === 'POST') {
     try {
