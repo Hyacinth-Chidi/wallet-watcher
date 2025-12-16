@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/webhook/moralis", "destination": "/api/index" },
+    { "source": "/api/telegram", "destination": "/api/telegram" },
+    { "source": "/health", "destination": "/api/index" },
+    { "source": "/", "destination": "/api/index" }
+  ]
+}
